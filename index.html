@@ -154,7 +154,7 @@
                 findTemperatureGeolocation.addEventListener("click", () => {
                     navigator.geolocation.getCurrentPosition((position) => {
                         let apiKey = "52e9e32cb26783779ed86b1d03ee38c7";
-                        let apiURL1 = `http://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=${apiKey}`;
+                        let apiURL1 = `https://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=${apiKey}`;
                         let apiURL2 = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
 
                         axios.get(`${apiURL1}&${apiKey}`).then((response) => {
