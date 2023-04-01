@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/4303141f18.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.1.2/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="main-frame">
+        <div class="container text-center">
+            <div class="row align-items-start">
+                <div class="col">
+                    <form class="search-form">
+                        <div class="input-container">
+                            <input class="city-input" type="text" placeholder="City">
+                            <i class="geolocation fa-solid fa-location-dot"></i>
+                        </div>
+
+                        <input class="submit" type="submit" value="Find">
+                    </form>
+                    <span class="signature">Created by Iryna Chubenko</span>
+                </div>
+                <div class="col">
+                    <div class="main-city row">
+                        <div class="col">
+                            <span class="main-image">☀️</span>
+                            <!-- <i class="main-image fa-solid fa-sun"></i> -->
+                            <br />
+                            <span class="main-temperature">0 </span><span class="celsius">°C</span><span>|</span><span
+                                class="farengeities">F</span>
+                        </div>
+                        <div class="col city-information">
+
+                            <span class="city-name">CITY</span>
+                            <p class="dayandtime"> Thursday 15:03</p>
+                            <p class="additional-info">
+                                Chance of precipitation: 1%
+                                <br>
+                                Humidity: 59%
+                                <br>
+                                Wind: 8 km/h
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-start week-weather">
+                <div class="col">
+                    <span class="day">Mon</span>
+                    <br />
+                    <span class="date">3/13</span>
+                    <br />
+                    <span class="weather-icon">⛅</span>
+                    <br />
+                    <p class="temperature">
+                        15 °C
+                        <br>
+                        3 °C
+                    </p>
+                </div>
+                <div class="col">
+                    <span class="day">Tue</span>
+                    <br />
+                    <span class="date">4/13</span>
+                    <br />
+                    <span class="weather-icon">🌤️</span>
+                    <br />
+                    <p class="temperature">
+                        15 °C
+                        <br>
+                        3 °C
+                    </p>
+                </div>
+                <div class="col">
+                    <span class="day">Wen</span>
+                    <br />
+                    <span class="date">5/13</span>
+                    <br />
+                    <span class="weather-icon">⛅</span>
+                    <br />
+                    <p class="temperature">
+                        15 °C
+                        <br>
+                        3 °C
+                    </p>
+                </div>
+                <div class="col">
+                    <span class="day">Thu</span>
+                    <br />
+                    <span class="date">6/13</span>
+                    <br />
+                    <span class="weather-icon">🌩️</span>
+                    <br />
+                    <p class="temperature">
+                        15 °C
+                        <br>
+                        3 °C
+                    </p>
+                </div>
+                <div class="col">
+                    <span class="day">Fri</span>
+                    <br />
+                    <span class="date">7/13</span>
+                    <br />
+                    <span class="weather-icon">🌦️</span>
+                    <br />
+                    <p class="temperature">
+                        15 °C
+                        <br>
+                        3 °C
+                    </p>
+                </div>
+            </div>
+
+
+            <script>
+
+                //enter city
+                function findCity(event) {
+                    event.preventDefault();
+
+                    let input = document.querySelector(".city-input");
+                    let city = document.querySelector(".city-name");
+
+                    city.innerHTML = input.value;
+                    input.value = "";
+
+                    let apiKey = "52e9e32cb26783779ed86b1d03ee38c7";
+                    let apiURL = `https://api.openweathermap.org/data/2.5/weather?q=${city.innerHTML}&appid=${apiKey}&units=metric&lang=en`;
+
+                    function showTemperature(response) {
+                        let curTem = Math.round(response.data.main.temp);
+                        let dataTemperature = document.querySelector(".main-temperature");
+                        dataTemperature.innerHTML = curTem;
+                    };
+
+                    axios.get(`${apiURL}&${apiKey}`).then(showTemperature);
+                }
+
+
+
+                let findTemperatureGeolocation = document.querySelector(".geolocation");
+                findTemperatureGeolocation.addEventListener("click", () => {
+                    navigator.geolocation.getCurrentPosition((position) => {
+                        let apiKey = "52e9e32cb26783779ed86b1d03ee38c7";
+                        let apiURL1 = `http://api.openweathermap.org/geo/1.0/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=1&appid=${apiKey}`;
+                        let apiURL2 = `https://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&appid=${apiKey}&units=metric`;
+
+                        axios.get(`${apiURL1}&${apiKey}`).then((response) => {
+                            document.querySelector(".city-name").innerHTML = response.data[0].name
+                        });
+                        axios.get(`${apiURL2}&${apiKey}`).then((response) => {
+                            console.log(response);
+                            let tem = Math.round(response.data.main.temp);
+                            let dataTemperature = document.querySelector(".main-temperature");
+                            dataTemperature.innerHTML = tem;
+                        });
+
+                    });
+                });
+
+
+
+
+
+                //add date
+
+                document.querySelector(".search-form")
+                    .addEventListener("submit", findCity);
+
+                let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                let curDate = new Date();
+                let currentDay = week[curDate.getDay()];
+                let allTime = document.querySelector(".dayandtime");
+                allTime.innerHTML = currentDay + ` ${(curDate.getHours() < 10 ? '0' : '') + curDate.getHours()}:${(curDate.getMinutes() < 10 ? '0' : '') + curDate.getMinutes()}`;
+
+
+                //convert temperature
+
+
+
+                let temperature = document.querySelector(".main-temperature");
+                let fButton = document.querySelector(".farengeities");
+                let cButton = document.querySelector(".celsius");
+
+                function farengeit(event) {
+                    event.preventDefault();
+                    temperature.innerHTML = 66;
+
+                    fButton.classList.add("selected");
+                    cButton.classList.remove("selected");
+                }
+
+                function cels(event) {
+                    event.preventDefault();
+                    console.log(event.target);
+                    temperature.innerHTML = 19;
+
+                    cButton.classList.add("selected");
+                    fButton.classList.remove("selected");
+                }
+
+
+
+
+                fButton.addEventListener("click", farengeit);
+                cButton.addEventListener("click", cels);
+
+
+
+
+            </script>
+
+</body>
+
+</html>
