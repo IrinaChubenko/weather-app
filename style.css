@@ -60,6 +60,10 @@
   font-size: 20px;
 }
 
+.additional-info::first-letter {
+  text-transform: capitalize;
+}
+
 .celsius:hover {
   cursor: pointer;
 }
@@ -72,17 +76,42 @@
   cursor: pointer;
 }
 
+.updating {
+  font-size: 8px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
 .additional-info {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+
   font-size: 8px;
 }
 
 .city-name {
   font-weight: 800;
   font-size: 20px;
+  text-transform: capitalize;
 }
 
 .day-time {
   font-size: 12px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.dayandtime {
+  margin-top: 1px;
+  margin-bottom: 1px;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .week-weather {
