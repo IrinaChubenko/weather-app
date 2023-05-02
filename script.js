@@ -33,6 +33,13 @@ function getDate(timestamp) {
   );
 }
 
+function getForecast(coordinates) {
+  let apiKey = "52e9e32cb26783779ed86b1d03ee38c7";
+  let apiURL = `https://api.openweathermap.org/data/2.5/forecast?lat=${coordinates.lat}&lon=${coordinates.lon}&appid=${apiKey}&units=metric`;
+
+  axios.get(apiURL).then(showForecast);
+}
+
 function setWeather(response) {
   console.log(response);
   let tem = Math.round(response.data.main.temp);
@@ -58,6 +65,8 @@ function setWeather(response) {
 
   cButton.classList.add("selected");
   fButton.classList.remove("selected");
+
+  getForecast(response.data.coord);
 }
 
 // Search
@@ -138,3 +147,42 @@ let celsiusTemperature = null;
 
 let farengeitiesBtn = document.querySelector(".farengeities");
 farengeitiesBtn.addEventListener("click", showFarengeities);
+
+// Forecast
+function showForecast(response) {
+  const weatherDay = response.data.list.filter(
+    (hourlyWeather) => new Date(hourlyWeather.dt * 1000).getUTCHours() === 12
+  );
+  const weatherNight = response.data.list.filter(
+    (hourlyWeather) => new Date(hourlyWeather.dt * 1000).getUTCHours() === 0
+  );
+
+  let forecast = document.querySelector(".week-weather");
+  let forecastHTML = "";
+
+  weatherDay.forEach((weather, i) => {
+    let date = new Date(weather.dt * 1000);
+
+    forecastHTML =
+      forecastHTML +
+      `<div class="col">
+            <span class="day">${week[date.getUTCDay() % 7]}</span>
+            <br />
+            <span class="date">${date.getUTCDate()}/${
+        (date.getUTCMonth() < 10 ? "0" : "") + date.getUTCMonth()
+      }</span>
+            <br />
+            <span class="weather-icon">${
+              weatherIcons[weather.weather[0].icon]
+            }</span>
+            <br />
+            <p class="temperature">
+                ${Math.round(weather.main.temp_max)} °C
+                <br>
+                ${Math.round(weatherNight[i].main.temp_min)} °C
+            </p>
+        </div>`;
+
+    forecast.innerHTML = forecastHTML;
+  });
+}
